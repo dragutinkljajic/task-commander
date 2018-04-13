@@ -16,7 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.TaskDetailsActivity"></activity>
+        <activity android:name=".activities.TaskDetailsActivity" />
+        <activity android:name=".activities.GroupsActivity" />
+        <activity android:name=".activities.GroupsTasksActivity" />
+        <activity android:name=".activities.NewGroupActivity" />
+        <activity android:name=".activities.NewTaskActivity"></activity>
     </application>
 
 </manifest>

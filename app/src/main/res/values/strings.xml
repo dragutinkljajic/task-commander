@@ -3,4 +3,5 @@
     <string name="date_format">dd MMMM HH:mm</string>
     <string name="complete_button_content">Complete</string>
     <string name="completion_message">Your task has been successfully completed!</string>
+    <string name="groups_message">GROUPS</string>
 </resources>

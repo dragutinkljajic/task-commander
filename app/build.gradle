@@ -19,7 +19,28 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:design:26.1.0'
     compile 'com.android.support:recyclerview-v7:26.1.0'
+
+    // firebase
+    compile 'com.google.firebase:firebase-auth:15.0.0'
+    compile 'com.google.firebase:firebase-database:15.0.0'
+    compile 'com.google.firebase:firebase-storage:15.0.0'
+    //probably not needed
+//    compile 'com.firebaseui:firebase-ui-storage:2.0.1'
+//    compile 'com.google.firebase:firebase-messaging:11.4.0'
+
+//    // twitter
+    compile 'com.twitter.sdk.android:twitter-core:3.1.1'
+    compile 'com.twitter.sdk.android:tweet-ui:3.1.1'
+    compile 'com.twitter.sdk.android:tweet-composer:3.1.1'
+    compile 'com.twitter.sdk.android:twitter-mopub:3.1.1'
+
+//    //facebook
+//    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+//
+//    //google
+    compile 'com.google.android.gms:play-services-auth:15.0.0'
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -29,3 +50,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

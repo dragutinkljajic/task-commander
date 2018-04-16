@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/repository.iml" filepath="$PROJECT_DIR$/repository.iml" />
+      <module fileurl="file://C:\Users\Shade\Documents\Git\task-commander\repository.iml" filepath="C:\Users\Shade\Documents\Git\task-commander\repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/task-commander.iml" filepath="$PROJECT_DIR$/task-commander.iml" />
     </modules>
   </component>
 </project>

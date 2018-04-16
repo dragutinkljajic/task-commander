@@ -27,6 +27,7 @@ public class NewGroupActivity extends AppCompatActivity {
         Group newGroup = new Group(name);
 
         intent.putExtra("newGroup", newGroup);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         context.startActivity(intent);
 
     }

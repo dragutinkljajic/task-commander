@@ -12,4 +12,7 @@
 
     <string name="google0AuthKey">526025813250-qigjhmrpuum95hlpsc5f3oam737uibfo.apps.googleusercontent.com</string>
     <string name="google_login_failed">Connection error!</string>
+
+    <string name="open">open</string>
+    <string name="close">close</string>
 </resources>

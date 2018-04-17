@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements
             dbRefUser.child("loginMethod").setValue(user.getLoginMethod());
         }
 
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 

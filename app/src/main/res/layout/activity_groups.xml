@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.example.android.taskcommander.activities.GroupsActivity">
 
+
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/groups_recycler_view"
         android:layout_width="match_parent"

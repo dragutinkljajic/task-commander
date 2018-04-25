@@ -7,13 +7,24 @@ import java.util.Date;
  */
 
 public class Message {
+
+    public final static String MSG_TYPE_SENT = "MSG_TYPE_SENT";
+
+    public final static String MSG_TYPE_RECEIVED = "MSG_TYPE_RECEIVED";
+
     private int uid;
     private Date timestamp;
     private String content;
+    private String msgType;
 
     public Message(int uid, Date timestamp, String content) {
         this.uid = uid;
         this.timestamp = timestamp;
+        this.content = content;
+    }
+
+    public Message(String msgType, String content) {
+        this.msgType = msgType;
         this.content = content;
     }
 
@@ -40,4 +51,8 @@ public class Message {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getMsgType() { return msgType; }
+
+    public void setMsgType(String msgType) { this.msgType = msgType; }
 }

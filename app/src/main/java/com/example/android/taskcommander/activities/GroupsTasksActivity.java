@@ -10,10 +10,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.android.taskcommander.R;
+import com.example.android.taskcommander.adapters.GroupsAdapter;
 import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Task;
+import com.example.android.taskcommander.util.HttpUtils;
+import com.example.android.taskcommander.util.JsonToClassMapper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,18 +40,9 @@ public class GroupsTasksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_groups_tasks);
 
-        recyclerView = (RecyclerView) findViewById(R.id.groups_tasks_recycler_view);
-
-        tAdapter = new TasksAdapter(this, tasks);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(tAdapter);
-
         Intent intent = getIntent();
         this.group = (Group)intent.getSerializableExtra("group");
-        prepareGroupsTasksData();
+        prepareGroupsTasksData(this, group.getUid());
 
         if(intent.hasExtra("parentGroup")){
             this.group = (Group) intent.getSerializableExtra("parentGroup");
@@ -54,12 +55,32 @@ public class GroupsTasksActivity extends AppCompatActivity {
 
     }
 
-    private void prepareGroupsTasksData(){
-        Task task1 = new Task("Naslov taska 1 grupe "+group.getName(), "Sadrzaj 1", new Date());
-        tasks.add(task1);
+    private void prepareGroupsTasksData(final Context context, Long group_id){
+        AndroidNetworking.initialize(context);
+        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/"+ SessionHandler.loggedEmail())
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/group_id/"+group_id)
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println(response);
+                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
+                        tasks =  jsonToClassMapper.tasksMapping(response, context);
 
-        Task task2 = new Task("Naslov taska 2 grupe "+group.getName(), "Sadrzaj 2", new Date());
-        tasks.add(task2);
+                        recyclerView = (RecyclerView) findViewById(R.id.groups_tasks_recycler_view);
+
+                        tAdapter = new TasksAdapter(context, tasks);
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                        recyclerView.setAdapter(tAdapter);
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
     }
 
     public void onAddNewTaskButtonClicked(final View view) {

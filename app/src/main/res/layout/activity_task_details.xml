@@ -33,6 +33,7 @@
         android:layout_margin="5dp"
         android:background="@color/colorCompleteButton"
         android:textColor="@color/colorPrimary"
+        android:theme="@style/ButtonStyle"
         />
 
     <ProgressBar

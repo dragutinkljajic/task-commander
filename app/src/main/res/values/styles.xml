@@ -12,4 +12,9 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="ButtonStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorButtonNormal">@color/colorPrimaryVeryLight</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
 </resources>

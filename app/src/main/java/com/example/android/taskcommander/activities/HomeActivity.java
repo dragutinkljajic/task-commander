@@ -16,9 +16,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.example.android.taskcommander.R;
 import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Task;
+import com.example.android.taskcommander.util.HttpUtils;
+import com.example.android.taskcommander.util.JsonToClassMapper;
+
+import org.json.JSONArray;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -35,31 +42,11 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        recyclerView = (RecyclerView) findViewById(R.id.tasks_recycler_view);
-
-        tAdapter = new TasksAdapter(this, tasks);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(tAdapter);
-
-        prepareTasksData();
-
         Intent intent = getIntent();
         int index = -1;
         if(intent.hasExtra("task")){
             Task task =(Task)intent.getSerializableExtra("task");
-
-            for (Task t : tasks) {
-                if(t.getCaption().equals(task.getCaption())){
-                    index = tasks.indexOf(t);
-                    break;
-                }
-            }
-            if(index!=-1) {
-                tasks.remove(index);
-            }
+            prepareTasksData(this, task.getUid());
         }
     }
 
@@ -88,17 +75,31 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    private void prepareTasksData(){
-        Task task1 = new Task("Naslov taska 1 grupe Grupa 1", "Sadrzaj1", new Date());
-        tasks.add(task1);
+    private void prepareTasksData(final Context context, Long task_id){
 
-        Task task2 = new Task("Naslov taska 2 grupe Grupa 1", "Sadrzaj2", new Date());
-        tasks.add(task2);
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println(response);
+                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
+                        tasks =  jsonToClassMapper.tasksMapping(response, context);
 
-        Task task3 = new Task("Naslov taska 1 grupe Grupa 2", "Sadrzaj3", new Date());
-        tasks.add(task3);
+                        recyclerView = (RecyclerView) findViewById(R.id.tasks_recycler_view);
 
-        Task task4 = new Task("Naslov taska 2 grupe Grupa 2", "Sadrzaj4", new Date());
-        tasks.add(task4);
+                        tAdapter = new TasksAdapter(context, tasks);
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.addItemDecoration(new DividerItemDecoration(context, LinearLayoutManager.VERTICAL));
+                        recyclerView.setAdapter(tAdapter);
+
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
     }
 }

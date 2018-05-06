@@ -22,6 +22,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:onClick="newGroupButtonClick"
-        android:text="New group" />
+        android:text="New group"
+        android:theme="@style/ButtonStyle"/>
 
 </RelativeLayout>

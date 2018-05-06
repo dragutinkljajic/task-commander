@@ -1,6 +1,7 @@
 package com.example.android.taskcommander.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.android.taskcommander.R;
+import com.example.android.taskcommander.adapters.GroupsAdapter;
 import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Task;
+import com.example.android.taskcommander.util.HttpUtils;
+import com.example.android.taskcommander.util.JsonToClassMapper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,16 +43,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
-        recyclerView = view.findViewById(R.id.tasks_recycler_view);
-
-        tAdapter = new TasksAdapter(getContext(), tasks);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-        recyclerView.setAdapter(tAdapter);
-
-        prepareTasksData();
+        prepareTasksData(getContext(), inflater, container, view);
 
         int index = -1;
         Bundle bundle = this.getArguments();
@@ -62,17 +64,33 @@ public class MainFragment extends Fragment {
         return view;
     }
 
-    private void prepareTasksData(){
-        Task task1 = new Task("Naslov taska 1 grupe Grupa 1", "Sadrzaj1", new Date());
-        tasks.add(task1);
+    private void prepareTasksData(final Context context, final LayoutInflater inflater, final ViewGroup container, final View view){
 
-        Task task2 = new Task("Naslov taska 2 grupe Grupa 1", "Sadrzaj2", new Date());
-        tasks.add(task2);
+        AndroidNetworking.initialize(context);
+        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println(response);
+                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
+                        tasks =  jsonToClassMapper.tasksMapping(response, context);
 
-        Task task3 = new Task("Naslov taska 1 grupe Grupa 2", "Sadrzaj3", new Date());
-        tasks.add(task3);
+                        recyclerView = view.findViewById(R.id.tasks_recycler_view);
 
-        Task task4 = new Task("Naslov taska 2 grupe Grupa 2", "Sadrzaj4", new Date());
-        tasks.add(task4);
+                        tAdapter = new TasksAdapter(getContext(), tasks);
+                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                        recyclerView.setAdapter(tAdapter);
+
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                    }
+                });
     }
 }

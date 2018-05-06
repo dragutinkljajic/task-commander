@@ -1,6 +1,9 @@
 package com.example.android.taskcommander.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -8,18 +11,25 @@ import java.util.Date;
  */
 
 public class Task implements Serializable{
-
-    private int uid;
+    @JsonProperty("id")
+    private Long uid;
+    @JsonProperty("name")
     private String caption;
+
     private String description;
     private Date deadline;
+    @JsonProperty("completed")
     private boolean isComplete = false;
 
     //foreign keys
     private int creator_uid;
     private int asignee_uid;
 
-    public Task(int uid, String caption, String description, Date deadline, boolean isComplete, int creator_uid, int asignee_uid) {
+    public Task() {
+
+    }
+
+    public Task(Long uid, String caption, String description, Date deadline, boolean isComplete, int creator_uid, int asignee_uid) {
         this.uid = uid;
         this.caption = caption;
         this.description = description;
@@ -35,11 +45,11 @@ public class Task implements Serializable{
         this.deadline = deadline;
     }
 
-    public int getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 

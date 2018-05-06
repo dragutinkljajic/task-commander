@@ -1,5 +1,7 @@
 package com.example.android.taskcommander.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,11 +10,17 @@ import java.util.ArrayList;
  */
 
 public class Group implements Serializable{
-    private int uid;
+    @JsonProperty("id")
+    private Long uid;
     private String name;
 
     //foreign keys
     private ArrayList<Member> members;
+    private ArrayList<Task> tasks;
+
+    public Group() {
+        this.tasks = new ArrayList<>();
+    }
 
     public Group(String name) {
 
@@ -20,16 +28,16 @@ public class Group implements Serializable{
     }
 
 
-    public Group(int uid, String name) {
+    public Group(Long uid, String name) {
         this.uid = uid;
         this.name = name;
     }
 
-    public int getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 

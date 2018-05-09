@@ -15,7 +15,7 @@ public class Group implements Serializable{
     private String name;
 
     //foreign keys
-    private ArrayList<Member> members;
+    private ArrayList<String> members;
     private ArrayList<Task> tasks;
 
     public Group() {
@@ -27,6 +27,11 @@ public class Group implements Serializable{
         this.name = name;
     }
 
+    public Group(String name, ArrayList<String> members) {
+
+        this.name = name;
+        this.members = members;
+    }
 
     public Group(Long uid, String name) {
         this.uid = uid;
@@ -47,5 +52,9 @@ public class Group implements Serializable{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void addMember(String email){
+        this.members.add(email);
     }
 }

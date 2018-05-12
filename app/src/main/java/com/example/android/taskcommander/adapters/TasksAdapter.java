@@ -60,7 +60,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Task task = tasksList.get(position);
-        holder.caption.setText(task.getCaption());
+        holder.caption.setText(task.getCaption()+"\n Assignee "+ task.getAssigneeMail());
         holder.task = task;
         SimpleDateFormat format = new SimpleDateFormat(context.getResources().getString(R.string.date_format));
         holder.deadline.setText(format.format(task.getDeadline()).toString());

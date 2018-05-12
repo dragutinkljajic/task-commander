@@ -3,6 +3,9 @@ package com.example.android.taskcommander.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +15,21 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.android.taskcommander.R;
 import com.example.android.taskcommander.activities.GroupsActivity;
 import com.example.android.taskcommander.activities.GroupsTasksActivity;
 import com.example.android.taskcommander.activities.TaskDetailsActivity;
 import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Task;
+import com.example.android.taskcommander.util.HttpUtils;
+import com.example.android.taskcommander.util.JsonToClassMapper;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -44,16 +56,35 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
             mLeaveButon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View v) {
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(context, group.getName(),
-                                    Toast.LENGTH_SHORT).show();
-                            removeAt(getAdapterPosition());
 
-                        }
-                    }, 2000);
+                    AndroidNetworking.initialize(context);
+
+                    AndroidNetworking.put(HttpUtils.WEB_SERVICE_BASE+"/task_group/leave/"+group.getUid()+"/dad@mail.com")//SessionHandler.loggedEmail()
+                            .build()
+                            .getAsJSONObject(new JSONObjectRequestListener() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+
+                                    Toast.makeText(context, "You left the group "+group.getName(),
+                                            Toast.LENGTH_SHORT).show();
+                                    removeAt(getAdapterPosition());
+                                }
+                                @Override
+                                public void onError(ANError error) {
+                                    // handle error
+                                }
+                            });
+
+//                    Handler handler = new Handler();
+//                    handler.postDelayed(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            Toast.makeText(context, group.getName(),
+//                                    Toast.LENGTH_SHORT).show();
+//                            removeAt(getAdapterPosition());
+//
+//                        }
+//                    }, 2000);
                 }
             });
 

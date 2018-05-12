@@ -3,6 +3,7 @@ package com.example.android.taskcommander.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,32 +18,41 @@ public class Task implements Serializable{
     private String caption;
 
     private String description;
-    private Date deadline;
+    private Timestamp deadline;
     @JsonProperty("completed")
     private boolean isComplete = false;
 
     //foreign keys
     private int creator_uid;
-    private int asignee_uid;
+    private Long group_id;
+    private String assigneeMail;
 
     public Task() {
 
     }
 
-    public Task(Long uid, String caption, String description, Date deadline, boolean isComplete, int creator_uid, int asignee_uid) {
+    public Task(Long uid, String caption, String description, Timestamp deadline, boolean isComplete, int creator_uid, String assignee) {
         this.uid = uid;
         this.caption = caption;
         this.description = description;
         this.deadline = deadline;
         this.isComplete = isComplete;
         this.creator_uid = creator_uid;
-        this.asignee_uid = asignee_uid;
+        this.assigneeMail = assignee;
     }
 
-    public Task(String caption, String description, Date deadline) {
+    public Task(String caption, String description, Timestamp deadline) {
         this.caption = caption;
         this.description = description;
         this.deadline = deadline;
+    }
+
+    public Task(String caption, String description, Timestamp deadline, Long group_id, String assigneeMail) {
+        this.caption = caption;
+        this.description = description;
+        this.deadline = deadline;
+        this.group_id = group_id;
+        this.assigneeMail = assigneeMail;
     }
 
     public Long getUid() {
@@ -69,11 +79,11 @@ public class Task implements Serializable{
         this.description = description;
     }
 
-    public Date getDeadline() {
+    public Timestamp getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(Timestamp deadline) {
         this.deadline = deadline;
     }
 
@@ -85,6 +95,13 @@ public class Task implements Serializable{
         isComplete = complete;
     }
 
+    public Long getGroup_id() {
+        return group_id;
+    }
+
+    public void setGroup_id(Long group_id) {
+        this.group_id = group_id;
+    }
     public int getCreator_uid() {
         return creator_uid;
     }
@@ -93,11 +110,10 @@ public class Task implements Serializable{
         this.creator_uid = creator_uid;
     }
 
-    public int getAsignee_uid() {
-        return asignee_uid;
-    }
 
-    public void setAsignee_uid(int asignee_uid) {
-        this.asignee_uid = asignee_uid;
+    public String getAssigneeMail() { return assigneeMail; }
+
+    public void setAssigneeMail(String assigneeMail) {
+        this.assigneeMail = assigneeMail;
     }
 }

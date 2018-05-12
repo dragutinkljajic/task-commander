@@ -35,6 +35,15 @@ public class JsonToClassMapper {
                 JSONObject group = (JSONObject) task_groups.get(i);
                 ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 group_object = mapper.readValue(group.toString(), Group.class);// read from json string
+
+                ArrayList<String> members = new ArrayList<>();
+                JSONArray json_members = group.getJSONArray("members");
+
+                for(int j=0; j<json_members.length(); j++){
+                    members.add(((JSONObject)json_members.get(j)).getString("email"));
+                }
+
+                group_object.setGroupMembers(members);
                 groups_objects.add(group_object);
             }
 
@@ -63,6 +72,7 @@ public class JsonToClassMapper {
                 JSONObject task = (JSONObject) tasks.get(i);
                 ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
                 task_object = mapper.readValue(task.toString(), Task.class);// read from json string
+                task_object.setAssigneeMail(task.getJSONObject("assignee").getString("email"));
                 tasks_objects.add(task_object);
             }
 

@@ -67,24 +67,37 @@ public class MainFragment extends Fragment {
     private void prepareTasksData(final Context context, final LayoutInflater inflater, final ViewGroup container, final View view){
 
         AndroidNetworking.initialize(context);
-        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
-        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/dad@mail.com")//SessionHandler.loggedEmail()
                 .build()
-                .getAsJSONArray(new JSONArrayRequestListener() {
+                .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
-                    public void onResponse(JSONArray response) {
-                        System.out.println(response);
-                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
-                        tasks =  jsonToClassMapper.tasksMapping(response, context);
+                    public void onResponse(JSONObject response) {
 
-                        recyclerView = view.findViewById(R.id.tasks_recycler_view);
+                        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+                                .build()
+                                .getAsJSONArray(new JSONArrayRequestListener() {
+                                    @Override
+                                    public void onResponse(JSONArray response) {
+                                        System.out.println(response);
+                                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
+                                        tasks =  jsonToClassMapper.tasksMapping(response, context);
 
-                        tAdapter = new TasksAdapter(getContext(), tasks);
-                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
-                        recyclerView.setAdapter(tAdapter);
+                                        recyclerView = view.findViewById(R.id.tasks_recycler_view);
+
+                                        tAdapter = new TasksAdapter(getContext(), tasks);
+                                        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                                        recyclerView.setLayoutManager(mLayoutManager);
+                                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+                                        recyclerView.setAdapter(tAdapter);
+
+                                    }
+                                    @Override
+                                    public void onError(ANError error) {
+                                        // handle error
+                                    }
+                                });
 
                     }
                     @Override
@@ -92,5 +105,9 @@ public class MainFragment extends Fragment {
                         // handle error
                     }
                 });
+
+        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
+
+
     }
 }

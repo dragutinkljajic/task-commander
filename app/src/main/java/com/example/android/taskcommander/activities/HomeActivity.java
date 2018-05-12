@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void prepareTasksData(final Context context, Long task_id){
-
+        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
         AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {

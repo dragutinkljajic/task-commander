@@ -26,6 +26,7 @@ import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Task;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,12 +51,15 @@ public class TaskDetailsActivity extends AppCompatActivity {
         mCaptionTextView = (TextView) findViewById(R.id.task_details_caption_tv);
         mDesctriptionTextView = (TextView) findViewById(R.id.task_details_description_tv);
         mCompleteButton = (Button) findViewById(R.id.complete_btn);
+
+        //if(!SessionHandler.loggedEmail().equals(task.getAsigneeMail())){
+        if(!task.getAssigneeMail().equals("dad@mail.com")){
+            mCompleteButton.setVisibility(View.INVISIBLE);
+        }
+
         mSpinningLoader = (ProgressBar) findViewById(R.id.complete_progress_spinning_loader);
-
         mCaptionTextView.setText(task.getCaption());
-        mDesctriptionTextView.setText(task.getDescription());
-
-
+        mDesctriptionTextView.setText(task.getDescription()+"\n\n"+ task.getDeadline()+ "\n\n"+ task.getAssigneeMail());
     }
 
     public void completeButtonClicked(final View view) {
@@ -74,7 +78,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                                 Toast.LENGTH_SHORT).show();
 
                         Context context = view.getContext();
-                        Intent intent = new Intent(context, HomeActivity.class);
+                        Intent intent = new Intent(context, MainActivity.class);
                         intent.putExtra("task", task);
                         context.startActivity(intent);
                     }
@@ -83,8 +87,6 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         // handle error
                     }
                 });
-
-
     }
 
 }

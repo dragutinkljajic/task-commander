@@ -44,13 +44,8 @@ public class GroupsTasksActivity extends AppCompatActivity {
         this.group = (Group)intent.getSerializableExtra("group");
         prepareGroupsTasksData(this, group.getUid());
 
-        if(intent.hasExtra("parentGroup")){
+        if(intent.hasExtra("parentGroup")) {
             this.group = (Group) intent.getSerializableExtra("parentGroup");
-        }
-
-        if(intent.hasExtra("newTask")){
-            Task task = (Task)intent.getSerializableExtra("newTask");
-            tasks.add(task);
         }
 
     }

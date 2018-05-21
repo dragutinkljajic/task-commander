@@ -23,6 +23,7 @@ import com.example.android.taskcommander.R;
 import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Task;
+import com.example.android.taskcommander.model.dto.TaskDto;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -97,7 +98,9 @@ public class NewTaskActivity extends AppCompatActivity {
         cal.set(Calendar.MONTH, date.getMonth());
         cal.set(Calendar.YEAR, date.getYear());
         cal.set(Calendar.HOUR_OF_DAY, time.getCurrentHour());
-        cal.set(Calendar.HOUR_OF_DAY, time.getCurrentMinute());
+        cal.set(Calendar.MINUTE, time.getCurrentMinute());
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
 
         long final_time = cal.getTimeInMillis();
 

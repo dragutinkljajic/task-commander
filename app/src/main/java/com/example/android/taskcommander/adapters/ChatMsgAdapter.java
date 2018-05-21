@@ -52,7 +52,7 @@ public class ChatMsgAdapter extends RecyclerView.Adapter<ChatMsgAdapter.ChatMsgV
             // Show received message in left linearlayout.
             holder.leftMsgLayout.setVisibility(LinearLayout.VISIBLE);
             holder.leftMsgTextView.setText(msgDto.getContent());
-            // Remove left linearlayout.The value should be GONE, can not be INVISIBLE
+            // Remove right linearlayout.The value should be GONE, can not be INVISIBLE
             // Otherwise each iteview's distance is too big.
             holder.rightMsgLayout.setVisibility(LinearLayout.GONE);
         }

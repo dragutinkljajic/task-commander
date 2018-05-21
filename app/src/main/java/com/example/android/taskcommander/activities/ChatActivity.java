@@ -46,6 +46,9 @@ public class ChatActivity extends AppCompatActivity {
 
         // Set data adapter to RecyclerView.
         msgRecyclerView.setAdapter(chatMsgAdapter);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        llm.setOrientation(LinearLayoutManager.VERTICAL);
+        msgRecyclerView.setLayoutManager(llm);
 
         final EditText msgInputText = (EditText)findViewById(R.id.chat_input_msg);
 

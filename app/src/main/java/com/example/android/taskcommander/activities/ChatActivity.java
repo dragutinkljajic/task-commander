@@ -1,5 +1,6 @@
 package com.example.android.taskcommander.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,73 +10,129 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONArrayRequestListener;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.example.android.taskcommander.R;
 import com.example.android.taskcommander.adapters.ChatMsgAdapter;
+import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Message;
+import com.example.android.taskcommander.util.HttpUtils;
+import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
-
+    private Group group;
+    private ArrayList<Message> messages = new ArrayList<>();
+    private RecyclerView msgRecyclerView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
         setTitle("Android Chat App Example");
+        Intent intent = getIntent();
 
-        // Get RecyclerView object.
-        final RecyclerView msgRecyclerView = (RecyclerView)findViewById(R.id.chat_recycler_view);
+        group = (Group)intent.getSerializableExtra("parentGroup");
 
-        // Set RecyclerView layout manager.
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        msgRecyclerView.setLayoutManager(linearLayoutManager);
+        AndroidNetworking.initialize(this);
+        //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/"+ SessionHandler.loggedEmail())
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/message/get_all/"+group.getUid())
+                .build()
+                .getAsJSONArray(new JSONArrayRequestListener() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        System.out.println(response);
+                        JsonToClassMapper jsonToClassMapper = new JsonToClassMapper();
+                        messages =  jsonToClassMapper.chatMapping(response, getApplicationContext());
 
-        // Create the initial data list.
-        final List<Message> msgList = new ArrayList<Message>();
-        Message msg = new Message(Message.MSG_TYPE_RECEIVED, "cao");
-        Message msg1 = new Message(Message.MSG_TYPE_SENT, "hello");
-        Message msg2 = new Message(Message.MSG_TYPE_RECEIVED, "kakote");
-        msgList.add(msg);
-        msgList.add(msg1);
-        msgList.add(msg2);
+                        msgRecyclerView = (RecyclerView)findViewById(R.id.chat_recycler_view);
+                        // Set RecyclerView layout manager.
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                        msgRecyclerView.setLayoutManager(linearLayoutManager);
 
-        // Create the data adapter with above data list.
-        final ChatMsgAdapter chatMsgAdapter = new ChatMsgAdapter(msgList);
 
-        // Set data adapter to RecyclerView.
-        msgRecyclerView.setAdapter(chatMsgAdapter);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        msgRecyclerView.setLayoutManager(llm);
+                        // Create the data adapter with above data list.
+                        final ChatMsgAdapter chatMsgAdapter = new ChatMsgAdapter(messages);
 
-        final EditText msgInputText = (EditText)findViewById(R.id.chat_input_msg);
+                        // Set data adapter to RecyclerView.
+                        msgRecyclerView.setAdapter(chatMsgAdapter);
+                        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
+                        llm.setOrientation(LinearLayoutManager.VERTICAL);
+                        msgRecyclerView.setLayoutManager(llm);
 
-        Button msgSendButton = (Button)findViewById(R.id.chat_send_msg);
+                        final EditText msgInputText = (EditText)findViewById(R.id.chat_input_msg);
 
-        msgSendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String msgContent = msgInputText.getText().toString();
-                if(!TextUtils.isEmpty(msgContent))
-                {
-                    // Add a new sent message to the list.
-                    Message msgDto = new Message(Message.MSG_TYPE_SENT, msgContent);
-                    msgList.add(msgDto);
+                        Button msgSendButton = (Button)findViewById(R.id.chat_send_msg);
 
-                    int newMsgPosition = msgList.size() - 1;
+                        msgSendButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String msgContent = msgInputText.getText().toString();
+                                if(!TextUtils.isEmpty(msgContent))
+                                {
 
-                    // Notify recycler view insert one new data.
-                    chatMsgAdapter.notifyItemInserted(newMsgPosition);
+                                    // Add a new sent message to the list.
+                                    Message msgDto = new Message(Message.MSG_TYPE_SENT, msgContent);
+                                    //msgDto.setSender(SessionHandler.loggedEmail());
+                                    msgDto.setSender("dad@mail.com");
+                                    messages.add(msgDto);
 
-                    // Scroll RecyclerView to the last message.
-                    msgRecyclerView.scrollToPosition(newMsgPosition);
+                                    AndroidNetworking.initialize(getApplicationContext());
+                                    ObjectMapper mapper = new ObjectMapper();
+                                    //Object to JSON in file
+                                    try {
+                                        String jsonInString = mapper.writeValueAsString(msgDto);
+                                        JSONObject obj = new JSONObject(jsonInString);
 
-                    // Empty the input edit text box.
-                    msgInputText.setText("");
-                }
-            }
-        });
+                                        AndroidNetworking.post(HttpUtils.WEB_SERVICE_BASE+"/message/create/"+group.getUid())
+                                                .addJSONObjectBody(obj)
+                                                .build()
+                                                .getAsJSONObject(new JSONObjectRequestListener() {
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        int newMsgPosition = messages.size() - 1;
+
+                                                        // Notify recycler view insert one new data.
+                                                        chatMsgAdapter.notifyItemInserted(newMsgPosition);
+
+                                                        // Scroll RecyclerView to the last message.
+                                                        msgRecyclerView.scrollToPosition(newMsgPosition);
+
+                                                        // Empty the input edit text box.
+                                                        msgInputText.setText("");
+                                                    }
+                                                    @Override
+                                                    public void onError(ANError error) {
+                                                        // handle error
+                                                        System.out.print("");
+                                                    }
+                                                });
+                                    } catch (JsonProcessingException e) {
+                                        e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                        });
+                    }
+                    @Override
+                    public void onError(ANError error) {
+                        // handle error
+                        System.out.println("onError");
+                    }
+                });
+
+
     }
 }

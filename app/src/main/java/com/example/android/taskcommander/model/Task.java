@@ -27,6 +27,9 @@ public class Task implements Serializable{
     private Long group_id;
     private String assigneeMail;
 
+    private double latitude;
+    private double longitude;
+
     public Task() {
 
     }
@@ -110,6 +113,17 @@ public class Task implements Serializable{
         this.creator_uid = creator_uid;
     }
 
+    public double getLatitude() { return latitude; }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() { return longitude; }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getAssigneeMail() { return assigneeMail; }
 

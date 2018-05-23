@@ -81,6 +81,7 @@ public class GroupsTasksActivity extends AppCompatActivity {
     public void onAddNewTaskButtonClicked(final View view) {
         Context context = view.getContext();
         Intent intent = new Intent(context, NewTaskActivity.class);
+
         intent.putExtra("parentGroup", group);
         context.startActivity(intent);
     }

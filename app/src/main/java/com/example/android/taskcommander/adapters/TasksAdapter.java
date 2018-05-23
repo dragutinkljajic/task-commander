@@ -2,6 +2,7 @@ package com.example.android.taskcommander.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,6 +61,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Task task = tasksList.get(position);
+
+        if(System.currentTimeMillis()>task.getDeadline().getTime()){
+            holder.caption.setTextColor(Color.RED);
+        }
         holder.caption.setText(task.getCaption()+"\n Assignee "+ task.getAssigneeMail());
         holder.task = task;
         SimpleDateFormat format = new SimpleDateFormat(context.getResources().getString(R.string.date_format));

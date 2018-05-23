@@ -126,6 +126,7 @@ public class NewTaskActivity extends AppCompatActivity {
                         intent.putExtra("newTask", newTask);
                         intent.putExtra("parentGroup", group);
                         intent.putExtra("group", group);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         context.startActivity(intent);
                     }
                     @Override

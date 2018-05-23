@@ -89,4 +89,11 @@ public class TaskDetailsActivity extends AppCompatActivity {
                 });
     }
 
+    public void locationButtonClicked(final View view) {
+        Context context = view.getContext();
+        Intent intent = new Intent(context, MapActivity.class);
+        intent.putExtra("task", task);
+        context.startActivity(intent);
+    }
+
 }

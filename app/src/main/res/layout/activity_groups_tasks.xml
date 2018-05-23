@@ -22,4 +22,13 @@
         android:onClick="onAddNewTaskButtonClicked"
         android:text="NEW TASK" />
 
+    <Button
+        android:id="@+id/chat_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:onClick="onChatButtonClicked"
+        android:text="CHAT" />
+
 </RelativeLayout>

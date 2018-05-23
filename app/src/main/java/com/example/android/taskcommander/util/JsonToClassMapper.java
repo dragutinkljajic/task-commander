@@ -3,6 +3,7 @@ package com.example.android.taskcommander.util;
 import android.content.Context;
 
 import com.example.android.taskcommander.model.Group;
+import com.example.android.taskcommander.model.Message;
 import com.example.android.taskcommander.model.Task;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -15,8 +16,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Tea on 5/2/2018.
@@ -88,5 +87,43 @@ public class JsonToClassMapper {
         }
 
         return tasks_objects;
+    }
+
+    public ArrayList<Message> chatMapping(JSONArray messages, Context context) {
+
+        ArrayList<Message> message_objects = new ArrayList<>();
+        try {
+
+            Message message_object = null;
+
+            for (int i = 0; i < messages.length(); i++) {
+                JSONObject message = (JSONObject) messages.get(i);
+                String user = message.getString("sender");
+                ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                message_object = mapper.readValue(message.toString(), Message.class);// read from json string
+                message_object.setSender(user);
+
+                //if(SessionHandler.loggedEmail().equals(message_object.getSender()))
+                if(message_object.getSender().equals("dad@mail.com")){
+                    message_object.setMsgType("MSG_TYPE_SENT");
+                }else{
+                    message_object.setMsgType("MSG_TYPE_RECEIVED");
+                }
+
+                message_objects.add(message_object);
+            }
+
+
+        } catch (JsonParseException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return message_objects;
     }
 }

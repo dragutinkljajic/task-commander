@@ -1,5 +1,8 @@
 package com.example.android.taskcommander.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.sql.Timestamp;
 import java.util.Date;
 
 /**
@@ -12,12 +15,25 @@ public class Message {
 
     public final static String MSG_TYPE_RECEIVED = "MSG_TYPE_RECEIVED";
 
-    private int uid;
-    private Date timestamp;
+    @JsonProperty("id")
+    private Long uid;
+
+    @JsonProperty("timestamp")
+    private Timestamp timestamp;
+
+    @JsonProperty("text")
     private String content;
+
+    @JsonProperty("msgType")
     private String msgType;
 
-    public Message(int uid, Date timestamp, String content) {
+    private String sender; //email
+
+    public Message() {
+        super();
+    }
+
+    public Message(Long uid, Timestamp timestamp, String content) {
         this.uid = uid;
         this.timestamp = timestamp;
         this.content = content;
@@ -28,11 +44,11 @@ public class Message {
         this.content = content;
     }
 
-    public int getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 
@@ -40,7 +56,7 @@ public class Message {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(Timestamp timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -55,4 +71,8 @@ public class Message {
     public String getMsgType() { return msgType; }
 
     public void setMsgType(String msgType) { this.msgType = msgType; }
+
+    public String getSender() { return sender; }
+
+    public void setSender(String sender) { this.sender = sender; }
 }

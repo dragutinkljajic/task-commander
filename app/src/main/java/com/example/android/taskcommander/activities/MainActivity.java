@@ -43,6 +43,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import static com.example.android.taskcommander.R.array.navDrawerFooterList;
 import static com.example.android.taskcommander.R.array.navDrawerList;
@@ -58,6 +59,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Firebase messaging
+        FirebaseMessaging.getInstance().subscribeToTopic("JavaSampleApproach");
+        // [END subscribe_topics]
+
+        // Log and toast
+        String msg = "kao radi";
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
 
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
 

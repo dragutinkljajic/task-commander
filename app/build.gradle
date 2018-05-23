@@ -27,12 +27,12 @@ dependencies {
 
     compile 'com.amitshekhar.android:android-networking:0.1.0'
     // firebase
-    compile 'com.google.firebase:firebase-auth:15.0.0'
+    compile 'com.google.firebase:firebase-auth:15.1.0'
     compile 'com.google.firebase:firebase-database:15.0.0'
-    compile 'com.google.firebase:firebase-storage:15.0.0'
+    compile 'com.google.firebase:firebase-storage:15.0.2'
     //probably not needed
 //    compile 'com.firebaseui:firebase-ui-storage:2.0.1'
-//    compile 'com.google.firebase:firebase-messaging:11.4.0'
+    compile 'com.google.firebase:firebase-messaging:15.0.2'
 
 //    // twitter
     compile 'com.twitter.sdk.android:twitter-core:3.1.1'

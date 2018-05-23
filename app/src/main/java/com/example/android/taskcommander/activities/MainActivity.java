@@ -1,10 +1,13 @@
 package com.example.android.taskcommander.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,6 +43,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.treebo.internetavailabilitychecker.InternetAvailabilityChecker;
+import com.treebo.internetavailabilitychecker.InternetConnectivityListener;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -48,16 +53,22 @@ import static com.example.android.taskcommander.R.array.navDrawerFooterList;
 import static com.example.android.taskcommander.R.array.navDrawerList;
 
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, InternetConnectivityListener {
 
     private FirebaseUser fbUser;
 
     private ProgressDialog progressDialog;
 
+    private InternetAvailabilityChecker mInternetAvailabilityChecker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        InternetAvailabilityChecker.init(this);
+        mInternetAvailabilityChecker = InternetAvailabilityChecker.getInstance();
+        mInternetAvailabilityChecker.addInternetConnectivityListener(this);
 
         fbUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -94,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         //TODO
                         break;
                     case 2:
-                        //TODO
+                        openActivity(ChatActivity.class);
                         break;
                 }
             }
@@ -243,8 +254,37 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mInternetAvailabilityChecker.removeInternetConnectivityChangeListener(this);
         if (progressDialog != null)
             progressDialog.dismiss();
     }
 
+    public AlertDialog.Builder buildDialog(Context c) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(c);
+        builder.setTitle("No Internet Connection");
+        builder.setMessage("You need to have Mobile Data or wifi to access this. Press ok to Exit");
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+//                finish();
+                moveTaskToBack(true);
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(1);
+            }
+        });
+
+        return builder;
+    }
+
+    @Override
+    public void onInternetConnectivityChanged(boolean isConnected) {
+
+        if(!isConnected){
+            buildDialog(MainActivity.this).show();
+        }
+    }
 }

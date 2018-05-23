@@ -14,5 +14,8 @@
     <string name="google_login_failed">Connection error!</string>
 
     <string name="open">open</string>
+    <string name="location">Location</string>
+    <string name="location_done">Done</string>
     <string name="close">close</string>
+    <string name="title_activity_map">MapActivity</string>
 </resources>

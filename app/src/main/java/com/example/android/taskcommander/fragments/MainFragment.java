@@ -35,6 +35,8 @@ public class MainFragment extends Fragment {
     private ArrayList<Task> tasks = new ArrayList<Task>();
     private RecyclerView recyclerView;
     private TasksAdapter tAdapter;
+    private LayoutInflater inflater;
+    private ViewGroup container;
 
     public MainFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         prepareTasksData(getContext(), inflater, container, view);
+        this.inflater = inflater;
 
         int index = -1;
         Bundle bundle = this.getArguments();
@@ -110,4 +113,6 @@ public class MainFragment extends Fragment {
 
 
     }
+
+
 }

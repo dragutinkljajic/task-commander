@@ -126,6 +126,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
                         Intent intent = new Intent(context, MainActivity.class);
                         intent.putExtra("task", task);
                         context.startActivity(intent);
+
                     }
                     @Override
                     public void onError(ANError error) {
@@ -139,6 +140,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
         Intent intent = new Intent(context, MapActivity.class);
         intent.putExtra("task", task);
         context.startActivity(intent);
+        finish();
     }
 
 }

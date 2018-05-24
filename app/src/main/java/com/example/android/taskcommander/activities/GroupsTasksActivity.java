@@ -84,6 +84,7 @@ public class GroupsTasksActivity extends AppCompatActivity {
 
         intent.putExtra("parentGroup", group);
         context.startActivity(intent);
+
     }
 
     public void onChatButtonClicked(final View view) {
@@ -91,5 +92,12 @@ public class GroupsTasksActivity extends AppCompatActivity {
         Intent intent = new Intent(context, ChatActivity.class);
         intent.putExtra("parentGroup", group);
         context.startActivity(intent);
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.prepareGroupsTasksData(this, group.getUid());
     }
 }

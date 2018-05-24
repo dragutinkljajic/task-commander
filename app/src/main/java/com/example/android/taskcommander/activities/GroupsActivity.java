@@ -105,5 +105,6 @@ public class GroupsActivity extends AppCompatActivity {
         Context context = view.getContext();
         Intent intent = new Intent(context, NewGroupActivity.class);
         context.startActivity(intent);
+        finish();
     }
 }

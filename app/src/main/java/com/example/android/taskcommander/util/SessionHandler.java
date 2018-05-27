@@ -8,7 +8,10 @@ import com.google.firebase.auth.FirebaseUser;
  */
 
 public class SessionHandler {
-
+    public static String loggedUid(){
+        FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+        return fbUser.getUid();
+    }
 
 
     public static String loggedEmail(){

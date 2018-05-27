@@ -52,8 +52,8 @@ public class TaskDetailsActivity extends AppCompatActivity {
         mDesctriptionTextView = (TextView) findViewById(R.id.task_details_description_tv);
         mCompleteButton = (Button) findViewById(R.id.complete_btn);
 
-        //if(!SessionHandler.loggedEmail().equals(task.getAsigneeMail())){
-        if(!task.getAssigneeMail().equals("dad@mail.com")){
+        if(!SessionHandler.loggedEmail().equals(task.getAssigneeMail())){
+        //if(!task.getAssigneeMail().equals("dad@mail.com")){
             mCompleteButton.setVisibility(View.INVISIBLE);
         }
 
@@ -65,7 +65,7 @@ public class TaskDetailsActivity extends AppCompatActivity {
     public void completeButtonClicked(final View view) {
         mSpinningLoader.setVisibility(View.VISIBLE);
         Handler handler = new Handler();
-        AndroidNetworking.put(HttpUtils.WEB_SERVICE_BASE+"/task/complete/"+task.getUid()+"/dad@mail.com")
+        AndroidNetworking.put(HttpUtils.WEB_SERVICE_BASE+"/task/complete/"+task.getUid()+"/"+SessionHandler.loggedEmail())
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override

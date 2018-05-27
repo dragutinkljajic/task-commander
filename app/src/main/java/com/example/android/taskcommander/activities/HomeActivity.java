@@ -24,6 +24,7 @@ import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Task;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 
 import org.json.JSONArray;
 
@@ -77,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void prepareTasksData(final Context context, Long task_id){
         //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
-        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
                 .build()
                 .getAsJSONArray(new JSONArrayRequestListener() {
                     @Override

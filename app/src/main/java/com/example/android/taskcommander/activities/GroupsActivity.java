@@ -67,7 +67,7 @@ public class GroupsActivity extends AppCompatActivity {
     private void prepareGroupsData(final Context context){
         AndroidNetworking.initialize(context);
         //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/"+ SessionHandler.loggedEmail())
-        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/dad@mail.com")
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/"+ SessionHandler.loggedEmail()+"/"+SessionHandler.loggedUid())
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
@@ -87,6 +87,7 @@ public class GroupsActivity extends AppCompatActivity {
                     @Override
                     public void onError(ANError error) {
                         // handle error
+                        System.out.println(error.getErrorCode() + error.getErrorDetail());
                     }
                 });
 

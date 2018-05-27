@@ -22,6 +22,7 @@ import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,8 +71,7 @@ public class NewGroupActivity extends AppCompatActivity {
 
         String name = nameField.getText().toString();
         ArrayList<String> members = new ArrayList<>();
-        //SessionHandler.loggedEmail()
-        members.add("dad@mail.com");
+        members.add(SessionHandler.loggedEmail());
         members.addAll(this.members);
         final Group newGroup = new Group(name, members);
 

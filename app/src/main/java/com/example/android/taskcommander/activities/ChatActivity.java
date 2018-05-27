@@ -20,6 +20,7 @@ import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Message;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -83,7 +84,7 @@ public class ChatActivity extends AppCompatActivity {
                                     // Add a new sent message to the list.
                                     Message msgDto = new Message(Message.MSG_TYPE_SENT, msgContent);
                                     //msgDto.setSender(SessionHandler.loggedEmail());
-                                    msgDto.setSender("dad@mail.com");
+                                    msgDto.setSender(SessionHandler.loggedEmail());
                                     messages.add(msgDto);
 
                                     AndroidNetworking.initialize(getApplicationContext());

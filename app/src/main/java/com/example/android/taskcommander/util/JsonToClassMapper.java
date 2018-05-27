@@ -103,8 +103,8 @@ public class JsonToClassMapper {
                 message_object = mapper.readValue(message.toString(), Message.class);// read from json string
                 message_object.setSender(user);
 
-                //if(SessionHandler.loggedEmail().equals(message_object.getSender()))
-                if(message_object.getSender().equals("dad@mail.com")){
+                if(SessionHandler.loggedEmail().equals(message_object.getSender())){
+                //if(message_object.getSender().equals("dad@mail.com")){
                     message_object.setMsgType("MSG_TYPE_SENT");
                 }else{
                     message_object.setMsgType("MSG_TYPE_RECEIVED");

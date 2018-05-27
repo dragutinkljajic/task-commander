@@ -44,6 +44,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 import com.example.android.taskcommander.model.User;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements
     private static final int FACEBOOK_SIGN_IN = 1200;
 
     private FirebaseAuth mAuth;
+    private FirebaseMessaging mMessaging;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private GoogleApiClient googleApiClient;
     private TwitterAuthClient twitterAuthClient;
@@ -77,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements
         initTwitterClient();
 
         mAuth = FirebaseAuth.getInstance();
+        mMessaging = FirebaseMessaging.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -161,6 +164,7 @@ public class LoginActivity extends AppCompatActivity implements
             dbRefUser.child("name").setValue(user.getName());
             dbRefUser.child("uid").setValue(user.getUid());
             dbRefUser.child("loginMethod").setValue(user.getLoginMethod());
+            mMessaging.subscribeToTopic(user.getUid());
         }
 
         Intent intent = new Intent(this, MainActivity.class);

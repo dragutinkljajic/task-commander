@@ -23,6 +23,7 @@ import com.example.android.taskcommander.adapters.TasksAdapter;
 import com.example.android.taskcommander.model.Task;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -68,13 +69,13 @@ public class MainFragment extends Fragment {
 
         AndroidNetworking.initialize(context);
 
-        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/dad@mail.com")//SessionHandler.loggedEmail()
+        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/user/initialRequest/"+SessionHandler.loggedEmail()+"/"+SessionHandler.loggedUid())
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/dad@mail.com")
+                        AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/"+ SessionHandler.loggedEmail())
                                 .build()
                                 .getAsJSONArray(new JSONArrayRequestListener() {
                                     @Override

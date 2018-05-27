@@ -27,6 +27,7 @@ import com.example.android.taskcommander.model.Group;
 import com.example.android.taskcommander.model.Task;
 import com.example.android.taskcommander.util.HttpUtils;
 import com.example.android.taskcommander.util.JsonToClassMapper;
+import com.example.android.taskcommander.util.SessionHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -59,7 +60,7 @@ public class GroupsAdapter extends RecyclerView.Adapter<GroupsAdapter.MyViewHold
 
                     AndroidNetworking.initialize(context);
 
-                    AndroidNetworking.put(HttpUtils.WEB_SERVICE_BASE+"/task_group/leave/"+group.getUid()+"/dad@mail.com")//SessionHandler.loggedEmail()
+                    AndroidNetworking.put(HttpUtils.WEB_SERVICE_BASE+"/task_group/leave/"+group.getUid()+"/"+ SessionHandler.loggedEmail())
                             .build()
                             .getAsJSONObject(new JSONObjectRequestListener() {
                                 @Override

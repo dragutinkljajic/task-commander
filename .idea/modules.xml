@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/repository.iml" filepath="$PROJECT_DIR$/repository.iml" />
-      <module fileurl="file://D:\My stuff\ANDROID\repository\task-commander.iml" filepath="D:\My stuff\ANDROID\repository\task-commander.iml" />
     </modules>
   </component>
 </project>

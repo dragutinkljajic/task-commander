@@ -15,7 +15,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by Tea on 5/2/2018.
@@ -123,6 +126,13 @@ public class JsonToClassMapper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        Collections.sort(message_objects, new Comparator<Message>() {
+            @Override
+            public int compare(Message m1, Message m2) {
+                return m1.getTimestamp().compareTo(m2.getTimestamp());
+            }
+        });
 
         return message_objects;
     }

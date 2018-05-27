@@ -47,8 +47,14 @@ public class HomeActivity extends AppCompatActivity {
         int index = -1;
         if(intent.hasExtra("task")){
             Task task =(Task)intent.getSerializableExtra("task");
-            prepareTasksData(this, task.getUid());
+            prepareTasksData(this);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.prepareTasksData(this);
     }
 
     @Override
@@ -76,7 +82,7 @@ public class HomeActivity extends AppCompatActivity {
         return true;
     }
 
-    private void prepareTasksData(final Context context, Long task_id){
+    private void prepareTasksData(final Context context){
         //AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
         AndroidNetworking.get(HttpUtils.WEB_SERVICE_BASE+"/task/find/assignee/"+ SessionHandler.loggedEmail())
                 .build()

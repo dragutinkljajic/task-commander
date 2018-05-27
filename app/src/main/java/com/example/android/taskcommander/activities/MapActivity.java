@@ -98,9 +98,7 @@ public class MapActivity extends AppCompatActivity {
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
-
                 MapActivity.this.mapboxMap = mapboxMap;
-
                 mapboxMap.setOnMapLongClickListener(listener);
             }
 
@@ -132,7 +130,9 @@ public class MapActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             intent.putExtra("task", task);
+
                             context.startActivity(intent);
+                            finish();
                         }
                         @Override
                         public void onError(ANError error) {

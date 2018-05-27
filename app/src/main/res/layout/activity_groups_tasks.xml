@@ -20,7 +20,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:onClick="onAddNewTaskButtonClicked"
-        android:text="NEW TASK" />
+        android:text="NEW TASK"
+        android:theme="@style/ButtonStyle"/>
 
     <Button
         android:id="@+id/chat_button"
@@ -29,6 +30,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:onClick="onChatButtonClicked"
-        android:text="CHAT" />
+        android:text="CHAT"
+        android:theme="@style/ButtonStyle"/>
 
 </RelativeLayout>

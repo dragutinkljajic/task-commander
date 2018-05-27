@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                         openActivity(GroupsActivity.class);
                         break;
                     case 1:
-                        //TODO
+                        openActivity(MainActivity.class);
                         break;
                     case 2:
                         openActivity(ChatActivity.class);

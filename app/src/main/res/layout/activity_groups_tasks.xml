@@ -33,4 +33,14 @@
         android:text="CHAT"
         android:theme="@style/ButtonStyle"/>
 
+    <Button
+        android:id="@+id/add_new_member_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:onClick="onAddNewMemberButtonClicked"
+        android:text="ADD NEW MEMBER"
+        android:theme="@style/ButtonStyle"/>
+
 </RelativeLayout>

@@ -10,7 +10,7 @@ import com.loopj.android.http.RequestParams;
 
 public class HttpUtils {
     private static final String BASE_URL = "http://api.twitter.com/1/";
-    public static final String  WEB_SERVICE_BASE = "http://192.168.43.184:8080";
+    public static final String  WEB_SERVICE_BASE = "http://192.168.0.79:8080";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
 

@@ -23,7 +23,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/email">
+        android:layout_below="@+id/email"
+
+        >
 
     <Button
         android:id="@+id/dialogButtonOK"
@@ -32,6 +34,7 @@
         android:text=" Ok "
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
+        android:theme="@style/ButtonStyle"
         />
 
     <Button
@@ -42,7 +45,9 @@
         android:layout_marginTop="5dp"
         android:layout_marginRight="5dp"
         android:layout_below="@+id/email"
-        android:layout_toRightOf="@id/dialogButtonOK" />
+        android:layout_toRightOf="@id/dialogButtonOK"
+        android:theme="@style/ButtonStyle"
+        />
     </LinearLayout>
 
 </RelativeLayout>

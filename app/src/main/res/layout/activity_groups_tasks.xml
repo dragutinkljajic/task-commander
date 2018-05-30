@@ -21,7 +21,9 @@
         android:layout_alignParentRight="true"
         android:onClick="onAddNewTaskButtonClicked"
         android:text="NEW TASK"
-        android:theme="@style/ButtonStyle"/>
+        android:theme="@style/ButtonStyle"
+        android:layout_margin="5dp"
+        />
 
     <Button
         android:id="@+id/chat_button"
@@ -31,7 +33,9 @@
         android:layout_alignParentLeft="true"
         android:onClick="onChatButtonClicked"
         android:text="CHAT"
-        android:theme="@style/ButtonStyle"/>
+        android:theme="@style/ButtonStyle"
+        android:layout_margin="5dp"
+        />
 
     <Button
         android:id="@+id/add_new_member_button"
@@ -41,6 +45,8 @@
         android:layout_centerHorizontal="true"
         android:onClick="onAddNewMemberButtonClicked"
         android:text="ADD NEW MEMBER"
-        android:theme="@style/ButtonStyle"/>
+        android:theme="@style/ButtonStyle"
+        android:layout_margin="5dp"
+        />
 
 </RelativeLayout>
